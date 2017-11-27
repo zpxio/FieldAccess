@@ -26,6 +26,6 @@ public interface FieldSet
 {
     default FieldValue getField(final String fieldName)
     {
-        return FieldRegistry.registry.getIndex(this.getClass()).getValue(this, fieldName);
+        return FieldRegistry.global.getIndex(this.getClass()).getValue(this, fieldName);
     }
 }

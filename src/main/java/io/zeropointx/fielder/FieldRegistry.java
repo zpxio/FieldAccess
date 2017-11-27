@@ -31,7 +31,7 @@ public class FieldRegistry
     /**
      * The global, shared registry for field lookup operations.
      */
-    protected static FieldRegistry registry = new FieldRegistry();
+    protected static FieldRegistry global = new FieldRegistry();
 
     /**
      * Replace the current registry with a new version. This will be used for all future lookup operations.
@@ -43,9 +43,9 @@ public class FieldRegistry
      *
      * @param registry The new registry for use for global lookup operations.
      */
-    protected static void replaceRegistry(final FieldRegistry registry)
+    protected static void setGlobal(final FieldRegistry registry)
     {
-        FieldRegistry.registry = registry;
+        FieldRegistry.global = registry;
     }
 
     /** A {@link Map} storing {@link ClassFieldIndex} instances for each class that has been encountered. */
