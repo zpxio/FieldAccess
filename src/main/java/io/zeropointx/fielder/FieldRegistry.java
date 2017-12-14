@@ -35,7 +35,7 @@ public class FieldRegistry
 
     /**
      * Replace the current registry with a new version. This will be used for all future lookup operations.
-     * Any {@link FieldSet}s currently performing operations may use the previous registry if they have already
+     * Any {@link FieldAccess}s currently performing operations may use the previous registry if they have already
      * fetched references to it. This shouldn't have adverse effects beyond the change in registry instance. If
      * objects need to avoid such situations, external synchronization is required.
      * <p>
@@ -49,7 +49,7 @@ public class FieldRegistry
     }
 
     /** A {@link Map} storing {@link ClassFieldIndex} instances for each class that has been encountered. */
-    private final Map<Class<? extends FieldSet>, ClassFieldIndex> index;
+    private final Map<Class<? extends FieldAccess>, ClassFieldIndex> index;
 
     /**
      * Create a new empty {@link FieldRegistry}.
@@ -68,7 +68,7 @@ public class FieldRegistry
      *
      * @return A populated {@link ClassFieldIndex}.
      */
-    public ClassFieldIndex getIndex(final Class<? extends FieldSet> fieldSetClass)
+    public ClassFieldIndex getIndex(final Class<? extends FieldAccess> fieldSetClass)
     {
         return this.index.computeIfAbsent(fieldSetClass, c -> new ClassFieldIndex(c));
     }

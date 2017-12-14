@@ -37,17 +37,17 @@ public class ClassFieldIndex
     private static final Set<String> accessorPrefices = Collections.unmodifiableSet(Sets.newHashSet("get", "is", "has" ));
 
     /** The {@link Class} being indexed. */
-    private final Class<? extends FieldSet> targetClass;
+    private final Class<? extends FieldAccess> targetClass;
 
     private final Map<String, Method> fieldMap;
 
     /**
-     * Create a new index for a {@link FieldSet} class. This will scan the class for supported fields and store
+     * Create a new index for a {@link FieldAccess} class. This will scan the class for supported fields and store
      * the results in this index.
      *
      * @param targetClass The {@link Class} to index.
      */
-    public ClassFieldIndex(final Class<? extends FieldSet> targetClass)
+    public ClassFieldIndex(final Class<? extends FieldAccess> targetClass)
     {
         super();
 
