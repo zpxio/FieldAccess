@@ -22,7 +22,7 @@ package io.zeropointx.fielder;
  * @author jeff@mind-trick.net
  * @since 2017-08-29
  */
-public interface FieldSet
+public interface FieldAccess
 {
     default FieldValue getField(final String fieldName)
     {

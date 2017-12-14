@@ -18,7 +18,7 @@
 
 package io.zeropointx.fielder.sample;
 
-import io.zeropointx.fielder.FieldSet;
+import io.zeropointx.fielder.FieldAccess;
 
 /**
  * A simple object using default options.
@@ -26,7 +26,7 @@ import io.zeropointx.fielder.FieldSet;
  * @author jeff@mind-trick.net
  * @since 2017-08-30
  */
-public class SampleOne implements FieldSet
+public class SampleOne implements FieldAccess
 {
     private String name;
     private int size;

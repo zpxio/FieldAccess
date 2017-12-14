@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.*;
  * @author jeff@mind-trick.net
  * @since 2017-08-29
  */
-public class FieldSetTest
+public class FieldAccessTest
 {
     @Test
     public void getField_sampleOne_simple()
