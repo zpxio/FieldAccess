@@ -16,26 +16,58 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess.sample;
 
-import io.zeropointx.fielder.sample.SampleOne;
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.*;
+import io.zeropointx.fieldaccess.FieldAccess;
 
 /**
+ * A simple object using default options.
+ *
  * @author jeff@mind-trick.net
- * @since 2017-08-29
+ * @since 2017-08-30
  */
-public class FieldAccessTest
+public class SampleOne implements FieldAccess
 {
-    @Test
-    public void getField_sampleOne_simple()
-    {
-        String testName = "aardvark";
-        SampleOne s = new SampleOne();
-        s.setName(testName);
+    private String name;
+    private int size;
+    private double itemWeight;
 
-        assertThat(s.getField("name").toString()).isEqualTo(testName);
+    public SampleOne()
+    {
+        super();
+
+        this.setName("?");
+        this.setSize(0);
+        this.setItemWeight(1.0);
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+    public int getSize()
+    {
+        return size;
+    }
+
+    public void setSize(final int size)
+    {
+        this.size = size;
+    }
+
+    public double getItemWeight()
+    {
+        return itemWeight;
+    }
+
+    public void setItemWeight(final double itemWeight)
+    {
+        this.itemWeight = itemWeight;
     }
 }

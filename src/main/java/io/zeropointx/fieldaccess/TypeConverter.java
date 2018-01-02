@@ -16,7 +16,7 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 import com.google.common.base.Objects;
 
@@ -25,7 +25,7 @@ import com.google.common.base.Objects;
  * type to another. The scope is intended to be as-global-as-you-want, though the resulting converter object makes no
  * attempt to register itself with any sort of context or global manager.
  * <p>
- * Of course, the most obvious use of a {@link TypeConverter} is to be registered with a {@link FieldConverter} for use
+ * Of course, the most obvious use of a {@link TypeConverter} is to be registered with a {@link UserFieldConverter} for use
  * in handling automatic type conversion for a {@link FieldRegistry}.
  *
  * @author jeff@mind-trick.net
@@ -78,7 +78,14 @@ public abstract class TypeConverter<S, D>
      * @return An object of the {@link #getDestinationClass() destination type} which was produced by converting the
      * supplied source object.
      */
-    abstract public D convert(final S source);
+    public final D convert(final Object source)
+    {
+        S typedSource = this.sourceClass.cast(source);
+
+        return convertTyped(typedSource);
+    }
+
+    abstract protected D convertTyped(final S source);
 
     @Override
     public boolean equals(final Object o)

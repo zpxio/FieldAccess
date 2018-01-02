@@ -16,7 +16,7 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

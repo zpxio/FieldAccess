@@ -16,16 +16,21 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 /**
  * @author jeff@mind-trick.net
- * @since 2017-08-29
+ * @since 2017-11-26
  */
-public interface FieldAccess
+public class BestEffortTypeConverter<S, D> extends TypeConverter<S, D>
 {
-    default FieldValue getField(final String fieldName)
+    public BestEffortTypeConverter(final Class<S> source, final Class<D> destination) {
+        super(source, destination);
+    }
+
+    @Override
+    public D convertTyped(final S source)
     {
-        return FieldRegistry.global.getIndex(this.getClass()).getValue(this, fieldName);
+        throw new MissingTypeConversionException("No type conversion found.");
     }
 }

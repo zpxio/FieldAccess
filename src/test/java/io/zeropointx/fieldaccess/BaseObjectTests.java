@@ -16,15 +16,13 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -54,21 +52,21 @@ public class BaseObjectTests
                 new EqualityObjectSet<>(TypeConverter.class,
                                         new TypeConverter<Double, Long>(Double.class, Long.class) {
                                             @Override
-                                            public Long convert(final Double source)
+                                            public Long convertTyped(final Double source)
                                             {
                                                 return source.longValue();
                                             }
                                         },
                                         new TypeConverter<Double, Long>(Double.class, Long.class) {
                                             @Override
-                                            public Long convert(final Double source)
+                                            public Long convertTyped(final Double source)
                                             {
                                                 return source.longValue();
                                             }
                                         },
                                         new TypeConverter<Double, String>(Double.class, String.class) {
                                             @Override
-                                            public String convert(final Double source)
+                                            public String convertTyped(final Double source)
                                             {
                                                 return source.toString();
                                             }

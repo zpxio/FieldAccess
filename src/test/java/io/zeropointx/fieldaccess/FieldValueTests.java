@@ -16,14 +16,48 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
+
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author jeff@mind-trick.net
- * @since 2017-08-30
+ * @since 2017-12-13
  */
-public class FieldRegistryTests
+public class FieldValueTests
 {
+    @Test
+    public void construct()
+    {
+        final String value = String.valueOf(14);
+        FieldValue fv = new FieldValue(value);
+
+        assertThat(fv.toString()).isEqualTo(value);
+        assertThat(fv.getValue()).isSameAs(value);
+    }
+
+    @Test
+    public void toInteger()
+    {
+        final Integer originalValue = Integer.valueOf(14);
+        final String value = originalValue.toString();
+        FieldValue fv = new FieldValue(value);
+
+        assertThat(fv.toInteger()).isEqualTo(originalValue);
+    }
+
+    @Test
+    public void toDouble()
+    {
+        final Double originalValue = Double.valueOf(14.1);
+        final String value = originalValue.toString();
+        FieldValue fv = new FieldValue(value);
+
+        assertThat(fv.toDouble()).isEqualTo(originalValue);
+    }
+
+
+
 }

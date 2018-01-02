@@ -16,47 +16,16 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 /**
- * This is the base implementation of a pseudo-union type.
- *
  * @author jeff@mind-trick.net
  * @since 2017-08-29
  */
-public class FieldValue<T>
+public interface FieldAccess
 {
-    /**
-     * Build a {@link FieldValue} for the given {@link Object} value. The exact type of {@link FieldValue}
-     * created is dependant upon the type of the object and
-     *
-     * @param obj The object to store as the value.
-     * @return A new {@link FieldValue} object.
-     */
-    public static FieldValue forResult(final Object obj)
+    default FieldValue getField(final String fieldName)
     {
-        return new FieldValue(obj);
-    }
-
-    /**
-     * The stored raw value of the field.
-     */
-    private final T value;
-
-    /**
-     * Create a new {@link FieldValue} which stores the given object.
-     *
-     * @param obj
-     */
-    public FieldValue(final T obj)
-    {
-        super();
-
-        this.value = obj;
-    }
-
-    public String toString()
-    {
-        return this.value.toString();
+        return FieldRegistry.global.getIndex(this.getClass()).getValue(this, fieldName);
     }
 }

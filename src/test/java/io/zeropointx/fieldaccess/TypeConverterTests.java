@@ -16,7 +16,7 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class TypeConverterTests
         this.converter = new TypeConverter<Double, Long>(this.sourceClass, this.destinationClass)
         {
             @Override
-            public Long convert(final Double source)
+            public Long convertTyped(final Double source)
             {
                 return source.longValue();
             }

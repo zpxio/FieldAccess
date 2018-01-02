@@ -16,58 +16,12 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder.sample;
-
-import io.zeropointx.fielder.FieldAccess;
+package io.zeropointx.fieldaccess;
 
 /**
- * A simple object using default options.
- *
  * @author jeff@mind-trick.net
  * @since 2017-08-30
  */
-public class SampleOne implements FieldAccess
+public class FieldRegistryTests
 {
-    private String name;
-    private int size;
-    private double itemWeight;
-
-    public SampleOne()
-    {
-        super();
-
-        this.setName("?");
-        this.setSize(0);
-        this.setItemWeight(1.0);
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(final String name)
-    {
-        this.name = name;
-    }
-
-    public int getSize()
-    {
-        return size;
-    }
-
-    public void setSize(final int size)
-    {
-        this.size = size;
-    }
-
-    public double getItemWeight()
-    {
-        return itemWeight;
-    }
-
-    public void setItemWeight(final double itemWeight)
-    {
-        this.itemWeight = itemWeight;
-    }
 }

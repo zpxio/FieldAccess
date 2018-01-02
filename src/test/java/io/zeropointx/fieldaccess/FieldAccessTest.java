@@ -16,32 +16,26 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
+
+import io.zeropointx.fieldaccess.sample.SampleOne;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author jeff@mind-trick.net
- * @since 2017-11-26
+ * @since 2017-08-29
  */
-public class MissingTypeConversionException extends RuntimeException
+public class FieldAccessTest
 {
-    /**
-     * Create a new {@link MissingTypeConversionException} with the given explanation.
-     *
-     * @param message An explanation for how the exception was encountered.
-     */
-    public MissingTypeConversionException(final String message)
+    @Test
+    public void getField_sampleOne_simple()
     {
-        super(message);
-    }
+        String testName = "aardvark";
+        SampleOne s = new SampleOne();
+        s.setName(testName);
 
-    /**
-     * Create a new {@link MissingTypeConversionException} caused by another error.
-     *
-     * @param message An explanation of what was being done while the error was encountered.
-     * @param cause The {@link Throwable} cause which triggered this exception.
-     */
-    public MissingTypeConversionException(final String message, final Throwable cause)
-    {
-        super(message, cause);
+        assertThat(s.getField("name").toString()).isEqualTo(testName);
     }
 }

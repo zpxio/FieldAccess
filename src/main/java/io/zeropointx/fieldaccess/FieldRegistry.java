@@ -16,7 +16,7 @@
  =
  ===============================================================================================*/
 
-package io.zeropointx.fielder;
+package io.zeropointx.fieldaccess;
 
 import com.google.common.collect.Maps;
 
@@ -51,6 +51,8 @@ public class FieldRegistry
     /** A {@link Map} storing {@link ClassFieldIndex} instances for each class that has been encountered. */
     private final Map<Class<? extends FieldAccess>, ClassFieldIndex> index;
 
+    private final FieldConverter converter;
+
     /**
      * Create a new empty {@link FieldRegistry}.
      */
@@ -59,6 +61,7 @@ public class FieldRegistry
         super();
 
         this.index = Maps.newConcurrentMap();
+        this.converter = new UserFieldConverter(new BaseFieldConverter());
     }
 
     /**
@@ -73,5 +76,14 @@ public class FieldRegistry
         return this.index.computeIfAbsent(fieldSetClass, c -> new ClassFieldIndex(c));
     }
 
-
+    /**
+     * Fetch a {@link FieldConverter} attached to the registry which is provided as a facility for converting values
+     * from one type to another.
+     *
+     * @return A {@link FieldConverter} instance.
+     */
+    public FieldConverter getConverter()
+    {
+        return converter;
+    }
 }
