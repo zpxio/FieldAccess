@@ -82,7 +82,11 @@ public abstract class TypeConverter<S, D>
     {
         S typedSource = this.sourceClass.cast(source);
 
-        return convertTyped(typedSource);
+        if (this.sourceClass.isAssignableFrom(this.destinationClass)) {
+            return this.destinationClass.cast(source);
+        }
+
+        return this.convertTyped(typedSource);
     }
 
     abstract protected D convertTyped(final S source);

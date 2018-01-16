@@ -38,4 +38,25 @@ public class FieldAccessTest
 
         assertThat(s.getField("name").toString()).isEqualTo(testName);
     }
+
+    @Test
+    public void getField_sampleOne_int() {
+        int testValue = 22;
+        SampleOne s = new SampleOne();
+
+        s.setSize(testValue);
+
+        assertThat(s.getField("size").toInteger()).isEqualTo(testValue);
+    }
+
+    @Test
+    public void getField_sampleOne_double() {
+        double testValue = 3.14156;
+        SampleOne s = new SampleOne();
+
+        s.setItemWeight(testValue);
+
+        assertThat(s.getField("itemWeight").toDouble()).isEqualTo(testValue);
+    }
+
 }

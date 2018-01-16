@@ -31,6 +31,6 @@ public class BestEffortTypeConverter<S, D> extends TypeConverter<S, D>
     @Override
     public D convertTyped(final S source)
     {
-        throw new MissingTypeConversionException("No type conversion found.");
+        throw new MissingTypeConversionException("No type conversion found: " + this.getSourceClass() + " -> " + this.getDestinationClass());
     }
 }
