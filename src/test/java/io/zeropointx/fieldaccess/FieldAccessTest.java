@@ -59,4 +59,34 @@ public class FieldAccessTest
         assertThat(s.getField("itemWeight").toDouble()).isEqualTo(testValue);
     }
 
+    @Test
+    public void setField_sampleOne_simple()
+    {
+        String testName = "aardvark";
+        SampleOne s = new SampleOne();
+        s.setField("name", testName);
+
+        assertThat(s.getName()).isEqualTo(testName);
+    }
+
+    @Test
+    public void setField_sampleOne_int() {
+        int testValue = 22;
+        SampleOne s = new SampleOne();
+
+        s.setField("size", testValue);
+
+        assertThat(s.getSize()).isEqualTo(testValue);
+    }
+
+    @Test
+    public void setField_sampleOne_double() {
+        double testValue = 3.14156;
+        SampleOne s = new SampleOne();
+
+        s.setField("itemWeight", testValue);
+
+        assertThat(s.getItemWeight()).isEqualTo(testValue);
+    }
+
 }

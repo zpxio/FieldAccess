@@ -1,6 +1,6 @@
 /*================================================================================================
  =
- = Copyright 2017: Jeff Sharpe
+ = Copyright 2018: Jeff Sharpe
  =
  =    Licensed under the Apache License, Version 2.0 (the "License");
  =    you may not use this file except in compliance with the License.
@@ -20,32 +20,28 @@ package io.zeropointx.fieldaccess;
 
 /**
  * @author jeff@mind-trick.net
- * @since 2017-08-29
+ * @since 2017-11-26
  */
-public interface FieldAccess
+public class NoSetterFoundException extends RuntimeException
 {
-    default FieldValue getField(final String fieldName)
+    /**
+     * Create a new {@link NoSetterFoundException} with the given explanation.
+     *
+     * @param message An explanation for how the exception was encountered.
+     */
+    public NoSetterFoundException(final String message)
     {
-        return this.getIndexedField(fieldName);
+        super(message);
     }
 
-    default FieldValue getIndexedField(final String fieldName)
+    /**
+     * Create a new {@link NoSetterFoundException} caused by another error.
+     *
+     * @param message An explanation of what was being done while the error was encountered.
+     * @param cause The {@link Throwable} cause which triggered this exception.
+     */
+    public NoSetterFoundException(final String message, final Throwable cause)
     {
-        return this.getFieldIndex().getValue(this, fieldName);
-    }
-
-    default void setField(final String fieldName, final Object value)
-    {
-        this.setIndexedField(fieldName, value);
-    }
-
-    default void setIndexedField(final String fieldName, final Object value)
-    {
-        this.getFieldIndex().setValue(this, fieldName, value);
-    }
-
-    default ClassFieldIndex getFieldIndex()
-    {
-        return FieldRegistry.global.getIndex(this.getClass());
+        super(message, cause);
     }
 }

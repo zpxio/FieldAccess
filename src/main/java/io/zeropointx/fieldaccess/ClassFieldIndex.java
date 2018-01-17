@@ -25,8 +25,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author jeff@mind-trick.net
@@ -34,12 +36,14 @@ import java.util.Set;
  */
 public class ClassFieldIndex
 {
-    private static final Set<String> accessorPrefices = Collections.unmodifiableSet(Sets.newHashSet("get", "is", "has" ));
+    protected static final Set<String> accessorPrefices = Collections.unmodifiableSet(Sets.newHashSet("get", "is", "has" ));
+    protected static final Set<String> mutatorPrefices = Collections.unmodifiableSet(Sets.newHashSet("set"));
 
     /** The {@link Class} being indexed. */
     private final Class<? extends FieldAccess> targetClass;
 
-    private final Map<String, Method> fieldMap;
+    private final Map<String, Method> getters;
+    private final Map<String, Map<Class<?>, Method>> setters;
 
     /**
      * Create a new index for a {@link FieldAccess} class. This will scan the class for supported fields and store
@@ -52,7 +56,8 @@ public class ClassFieldIndex
         super();
 
         this.targetClass = targetClass;
-        this.fieldMap = Maps.newConcurrentMap();
+        this.getters = Maps.newConcurrentMap();
+        this.setters = Maps.newConcurrentMap();
 
         this.scanFields();
     }
@@ -74,22 +79,36 @@ public class ClassFieldIndex
         for (Method method : selectedMethods)
         {
             // Look for a field for the method.
-            String fieldName = this.getFieldForMethod(method);
+            String fieldName = this.getFieldForMethod(method, ClassFieldIndex.accessorPrefices);
 
-            this.fieldMap.put(fieldName, method);
+            this.getters.put(fieldName, method);
+        }
+
+        // Scan methods that look like setters
+        Set<Method> possibleSetters = Arrays.stream(this.targetClass.getDeclaredMethods())
+              .filter(method -> method.getParameterCount() == 1)
+              .filter(method -> method.getName().startsWith("set"))
+              .collect(Collectors.toSet());
+
+        for (Method method : possibleSetters)
+        {
+            String fieldName = this.getFieldForMethod(method, ClassFieldIndex.mutatorPrefices);
+
+            Map<Class<?>, Method> setterMap = this.setters.computeIfAbsent(fieldName, key -> new HashMap<>());
+            setterMap.putIfAbsent(method.getParameterTypes()[0], method);
         }
     }
 
-    public final String getFieldForMethod(final Method method)
+    public final String getFieldForMethod(final Method method, final Set<String> prefixes)
     {
-        return this.parseFieldFromMethodName(method.getName());
+        return this.parseFieldFromMethodName(method.getName(), prefixes);
     }
 
-    public String parseFieldFromMethodName(final String methodName)
+    public String parseFieldFromMethodName(final String methodName, final Set<String> prefixes)
     {
         String fieldName = methodName;
 
-        for (final String prefix : ClassFieldIndex.accessorPrefices)
+        for (final String prefix : prefixes)
         {
             if (fieldName.startsWith(prefix) && Character.isUpperCase(fieldName.charAt(prefix.length())))
             {
@@ -119,9 +138,9 @@ public class ClassFieldIndex
 
     public FieldValue getValue(final Object instance, final String fieldName)
     {
-        if (this.fieldMap.containsKey(fieldName))
+        if (this.getters.containsKey(fieldName))
         {
-            Method getter = this.fieldMap.get(fieldName);
+            Method getter = this.getters.get(fieldName);
 
             try
             {
@@ -138,5 +157,49 @@ public class ClassFieldIndex
         }
 
         return new UnknownFieldValue();
+    }
+
+    public boolean isMatchingClass(final Class<?> target, final Class<?> query)
+    {
+        if (target.isPrimitive())
+        {
+            if ((target == int.class) && (query == Integer.class)) return true;
+            if ((target == long.class) && (query == Long.class)) return true;
+            if ((target == double.class) && (query == Double.class)) return true;
+            if ((target == boolean.class) && (query == Boolean.class)) return true;
+            if ((target == float.class) && (query == Float.class)) return true;
+            if ((target == short.class) && (query == Short.class)) return true;
+            if ((target == byte.class) && (query == Byte.class)) return true;
+            if ((target == char.class) && (query == Character.class)) return true;
+        }
+        else
+        {
+            return target.isAssignableFrom(query);
+        }
+
+        return false;
+    }
+
+    public void setValue(final Object instance, final String fieldName, final Object value)
+    {
+        if (this.setters.containsKey(fieldName))
+        {
+            Map<Class<?>, Method> setterMap = this.setters.get(fieldName);
+            try
+            {
+                setterMap.entrySet().stream().filter(e -> this.isMatchingClass(e.getKey(), value.getClass()))
+                         .findFirst()
+                         .orElseThrow(() -> new NoSetterFoundException("No compatible setter method found for " + fieldName + "(" + value.getClass().getName() + ")"))
+                         .getValue().invoke(instance, value);
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+            catch (InvocationTargetException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 }
