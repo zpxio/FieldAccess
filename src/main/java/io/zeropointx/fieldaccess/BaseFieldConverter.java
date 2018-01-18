@@ -49,12 +49,12 @@ class BaseFieldConverter implements FieldConverter
     }
 
     @Override
-    public final <S,D> void register(final TypeConverter<S, D> converter)
+    public final <S, D> void register(final TypeConverter<S, D> converter)
     {
         this.getDestinationMap(converter.getSourceClass()).put(converter.getDestinationClass(), converter);
     }
 
-    protected final <S,D> Map<Class<?>, TypeConverter<?, ?>> getDestinationMap(final Class<S> sourceType)
+    protected final <S> Map<Class<?>, TypeConverter<?, ?>> getDestinationMap(final Class<S> sourceType)
     {
         return this.converterMap.computeIfAbsent(sourceType, (type) -> new HashMap<>());
     }
